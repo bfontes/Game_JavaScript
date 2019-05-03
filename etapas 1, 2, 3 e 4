@@ -1,3 +1,9 @@
+/* 
+    Equipe: 
+        Ana Beatriz Fontes Ferreira - Subturma D (Líder) 
+        Vitória Silva Bredun - Subturma D
+        Etapa 1, 2, 3 e 4
+*/
 //posicao personagem
 let x = 200;
 let y = 350;
