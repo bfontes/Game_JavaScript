@@ -1,0 +1,76 @@
+//posicao personagem
+let x = 200;
+let y = 350;
+
+var colidiu=false;  //colisão com a reta
+
+//estado da bala
+var estadoDisparo= false;
+
+//posicao da bala
+var xd= x;
+var yd= y;
+
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(255,0,150,25)
+  if(estadoDisparo==false)
+  {
+    xd= x;
+    yd= y;
+  }
+  if(keyIsDown(CONTROL) && estadoDisparo==false)
+  {
+    xd= x;
+    yd= y;
+    estadoDisparo = true;
+  }
+  if(estadoDisparo== true ){
+    yd= yd - 7;
+    if(yd < 0){
+      estadoDisparo= false;
+    }
+  }    
+    
+  
+  if(keyIsDown(DOWN_ARROW)){
+    if(y + 20 < 400){
+      y = y + 3;}
+  }
+  
+  if(keyIsDown(UP_ARROW)){
+    if(y - 20 > 0){
+    y= y - 3}
+  }
+  
+  if(keyIsDown(RIGHT_ARROW)){
+    if(x + 20 < 400){
+    x= x + 3}
+  }
+  
+  if(keyIsDown(LEFT_ARROW)){
+    if(x - 20 > 0){
+    x= x - 3}
+  }
+  
+  ellipse(x, y, 40, 40);
+  ellipse(xd, yd, 3, 3);
+  
+  if(colidiu===true){
+     x = 200;
+    y = 350;
+    colidiu=false
+  }
+   
+
+    if(y-20<5){
+      colidiu=true
+    }
+  
+  
+  rect(-1, 0, 401, 5);
+
+}
