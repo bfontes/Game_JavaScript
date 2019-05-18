@@ -1,0 +1,108 @@
+/* 
+    Equipe: 
+        Ana Beatriz Fontes Ferreira - Subturma D (Líder) 
+        Vitória Silva Bredun - Subturma D
+        Etapa 1, 2, 3 e 4
+*/
+//posicao personagem
+let x = 225;
+let y = 350;
+//texto- Etapa 5
+var nivel= 1;
+var pontos= 0;
+var vidas=3;
+
+var colidiu=false;  //colisão com a reta
+
+//estado da bala
+var estadoDisparo= false;
+
+//posicao da bala
+var xd= x;
+var yd= y;
+
+var morte = false;
+
+function setup() {
+  createCanvas(450, 450);
+}
+
+function draw() {
+  background(255,0,150,25)
+  textSize(20);
+  text('Vidas: '+vidas, 10, 30);
+  text('Pontos: '+pontos, 170, 30);
+  text('Nível: '+nivel, 350, 30);
+  fill(0, 102, 153);
+  //disparo da bolinha
+  if(estadoDisparo==false)
+  {
+    xd= x;
+    yd= y;
+  }
+  if(keyIsDown(CONTROL) && estadoDisparo==false)
+  {
+    xd= x;
+    yd= y;
+    estadoDisparo = true;
+  }
+  if(estadoDisparo== true ){
+    yd= yd - 7;
+    if(yd < 0){
+      estadoDisparo= false;
+    }
+  }    
+    
+  
+  if(keyIsDown(DOWN_ARROW)){
+    if(y + 20 < 450){
+      y = y + 3;}
+  }
+  
+  if(keyIsDown(UP_ARROW)){
+    if(y - 20 > 0){
+    y= y - 3}
+  }
+  
+  if(keyIsDown(RIGHT_ARROW)){
+    if(x + 20 < 450){
+    x= x + 3}
+  }
+  
+  if(keyIsDown(LEFT_ARROW)){
+    if(x - 20 > 0){
+    x= x - 3}
+  }
+  
+  ellipse(x, y, 40, 40);
+  ellipse(xd, yd, 3, 3);
+  // colisão com a reta- Etapa 6
+  if(colidiu===true){
+     x = 225;
+    y = 350;
+    colidiu=false
+  }
+   
+
+    if(y-20<5 && morte == false)
+    {
+      colidiu=true
+      vidas--;
+    }
+    if(vidas<=0)
+    {
+      morte = true;
+      text("Pressione R para recomeçar", 100, 370);
+    }
+    //restart
+    if(morte == true && keyCode == 82)
+    {
+      vidas = 3;
+      morte = false
+      nivel=0;
+      ponto=0;
+    }
+  
+  
+  rect(-1, 0, 450, 6);
+}
