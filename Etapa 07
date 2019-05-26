@@ -1,0 +1,22 @@
+var vx=[];
+var vy=[];
+var qtdObj=10;
+var vel= 3.5;
+function setup() {
+createCanvas(400, 400);
+  for(var i=0; i<qtdObj; i++){
+    vx[i]= random(0, 400); 
+    vy[i]= random(0, 400);
+  }
+}
+
+function draw() {
+  background(220);
+  for(var i=0; i<qtdObj; i++){
+    ellipse(vx[i],vy[i], 15, 15);
+    if(vy[i] > 400){
+      vy[i]= -random(10);
+  }
+    vy[i]+=vel
+}
+}
