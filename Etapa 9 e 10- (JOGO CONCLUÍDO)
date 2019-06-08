@@ -1,0 +1,390 @@
+
+
+
+
+//coordenadas da posição e do raio do jogador
+let x, 
+    y, 
+    r;
+
+//cores e raios correspondentes aos fantasminhas
+let _red,
+    _green,
+    _blue;
+
+//imagem pacman
+let pacmananime = [],
+    anime,
+    contFrame = 0,
+    paraFrame = 0,
+    contFrame2 = 0,
+    paraFrame2 = 0;
+
+let rR,
+    rG,
+    rB;
+// imagens
+let imgfantasmas = [],
+    imageanime = [],
+    anime2,
+    imgOriva;
+
+//som do jogo
+let mySound,
+    mySound2,
+    mySoundMGO2,
+    mySoundMGO;
+
+//coordenadas do círculo
+let eX,
+    eY,
+    eR,
+    eV;
+//posições das imagens
+let fantasmaposx = [],
+    fantasmaposy = [],
+    jogarposx = 160,
+    jogarposy = 120,
+    instrucoesposx = 130,
+    instrucoesposy = 160,
+    creditosposx = 70,
+    creditosposy = 350;
+  
+//bônus dentro dos círculos- posição da bala
+let xd = eX,
+    yd = eY,
+    morte = false;
+
+//estado de disparo
+let estadoDisparo = false;
+
+//colisão
+let colidiu = false;
+
+//pontos 
+let pontos;
+
+// Nível de dificuldade
+let nivel = 1;
+
+//barreira de pontos
+let barreiraDePontos = 20;
+
+//cena
+let cena = 0,
+   tempo = 0;
+
+//distancia
+let distanciajogar,
+    distanciacreditos,
+    distanciaintrucoes;
+
+//imagens
+let imgBolinha;
+function preload() 
+{
+  imgfantasmas[0] = loadImage('vermelho_40.png');
+  imgfantasmas[1] = loadImage('verde_40.png');
+  imgfantasmas[2] = loadImage('laranja_40.png');
+  imgfantasmas[3] = loadImage('roxo_40.png');
+  pacmananime[0]  = loadImage('Pack_man_open_1.png');
+  pacmananime[1]  = loadImage('Pac_Man_Close_1.png');
+  imageOriva      = loadImage('boss.png');
+  imageanime[0]   = loadImage('anim0.png');
+  imageanime[1]   = loadImage('anim1.png');
+  imageanime[2]   = loadImage('anim2.png');
+  imageanime[3]   = loadImage('anim3.png');
+  imageanime[4]   = loadImage('anim4.png');
+  imageanime[5]   = loadImage('anim5.png');
+  
+//sons
+  soundFormats('mp3', 'ogg');
+  mySound = loadSound('Stardust.mp3');
+  mySoundMGO = loadSound('Stardust.mp3');
+  mySound2 = loadSound('The Next Episode ft Snoop Dogg Kurupt Nate Dogg-5.mp3');
+  mySoundMGO2 = loadSound('The Next Episode ft Snoop Dogg Kurupt Nate Dogg-5.mp3');// colocar depois
+}
+
+ function animacao()// = Etapa 10
+ {
+   anime = pacmananime[contFrame];
+   image(anime, x, y);
+   paraFrame++;
+   if(paraFrame > 5)
+   {
+     contFrame++;
+     paraFrame = 0;
+   }
+   if(contFrame > 1)
+   {
+     contFrame = 0;
+   }  
+ }
+ function animaoriva()
+{
+    paraFrame2++;
+    anime2 = imageanime[contFrame2];
+    image(anime2, 0, 0);
+    if(paraFrame2 > 8)
+    {
+     contFrame2++;
+     paraFrame2 = 0;
+    }
+    if(contFrame2 > 5)
+    {
+     contFrame2 = 0;
+    }  
+}
+ function setup() 
+ {
+  frameRate(30);
+  createCanvas(400, 400);
+     
+ for(i=0; i<4; i++)
+ {
+ fantasmaposx[i] =  random(0, 380);
+ fantasmaposy[i] = -random(0, 25);
+ }
+   
+//rect
+  r = 50;
+  x = 150;
+  y = 390 - r;
+  
+//pac man
+  eX = 50;
+  eY = 50;
+  eR = 15;
+  eV = 1.4;
+  
+//pontos
+  pontos = 5;
+   
+//sons
+  mySound.setVolume(0.1);
+  mySound.play();
+  frameRate(30);
+}
+
+// cenas do jogo
+ function draw() // - Etapa 09
+ {
+  if(cena == 0)
+  {
+    menu();
+  }
+  else if(cena == 1)
+  {
+    jogo();
+  }
+  else if(cena == 2)
+  {
+    gameover();
+  } 
+  else if(cena == 3){
+    intrucoes();
+  }
+ } 
+// menu do jogo
+ function menu()
+ {
+  background(0);
+  imageMode(height/3);
+  image(imgfantasmas[0], 240, 200, 100, 100);
+  image(imgfantasmas[1], 150, 200, 100, 100);
+  image(imgfantasmas[2], 60, 200, 100, 100);
+  
+  
+//nome do jogo e enfeites
+  textSize(32);
+  fill(random(255),random(255), random(255));
+  text('ORIVAS PAC MAN', 65, 57);
+  textSize(20);
+  text('JOGAR', jogarposx, jogarposy);
+  text('INSTRUÇÕES', instrucoesposx,instrucoesposy);
+  textSize(16);
+  text('CRÉDITOS: ANA BEATRIZ E VITÓRIA',creditosposx, creditosposy);
+  
+  distanciajogar = parseInt(dist(mouseX, mouseY, jogarposx + 15, jogarposy));
+  if(distanciajogar <= 25)
+  {
+       if(mouseIsPressed)
+        {
+          cena = 1;
+        }
+   }
+  
+  distanciaintrucoes = parseInt(dist(mouseX, mouseY, instrucoesposx + 20, instrucoesposy));
+  if(distanciaintrucoes <= 25)
+  {
+       if(mouseIsPressed)
+        {
+          cena = 3;
+        }
+   }
+ }
+
+//instruções
+ function intrucoes()
+ {
+  textSize(23);
+  background(0);
+  text('INSTRUÇÕES', 130 , 90);
+  textSize(13);
+  text('1.Movimente o pac man com as setas do teclado para esquerda e \n para direita; \n 2.A partir do nível 5, aperte control para atirar; \n 3.Se deixar os fantasmas ultrapassarem o pac man, você perderá \n de um a três pontos; \n 4.Ganhará o jogo se chegar no nível 10; \n \n Para voltar a tela inicial aperte ENTER \n Boa sorte!!!', 10, 150); 
+   
+  if(keyIsDown(ENTER))
+  {
+    cena = 0;
+  }
+ }
+
+// cor de fundo dos níveis  
+ function jogo()
+ {
+  if(nivel == 1)
+  {
+    background(150, 0, 75);
+  }
+  if(nivel == 2)
+  {
+    background(20, 200, 250);
+  }
+  if(nivel == 3)
+  {
+    background(15, 0, 75);
+  }
+  if(nivel == 4)
+  {
+    background(150);
+  }
+  if(nivel >= 5)
+  {
+    background(0);
+  
+   
+//disparo - Etapa 04
+  if(keyIsDown(CONTROL) && estadoDisparo==false)
+  {
+    xd = x + 25;
+    yd = y;
+    estadoDisparo = true;
+  }
+  if(estadoDisparo == true)
+  {
+    circle(xd, yd, 3, 3);
+    yd = yd - 10
+    if(yd < 0)
+    {
+      estadoDisparo = false;
+    }
+  }
+  for(i= 0; i< 4; i++)
+  {
+      if(dist(fantasmaposx[i] +10, fantasmaposy[i], xd + 2, yd+ 2 ) <= 2)
+      {
+         fantasmaposx[i]= 0
+      }
+  }
+}
+    
+//incremento de pontos - Etapa 08
+  if(pontos > barreiraDePontos)
+  {
+    nivel++;
+    barreiraDePontos = barreiraDePontos + 5;
+    eV += 1.4;
+  }
+  
+//movimentação do jogo - Etapa 02
+  if(keyIsDown(RIGHT_ARROW))
+  {
+    x = x + 6;
+  }
+  if(keyIsDown(LEFT_ARROW))
+  {
+    x = x - 6;
+  }
+  
+// fazendo com que a bolinha apareça do outro lado do quadro se apertamos o teclado pra ir pra direita e ela sair da tela - Etapa 03
+  if(x > 400)
+  {
+    x = 0;
+  }
+  if(x < 0)
+  {
+    x = 400;
+  }
+  
+//ellipse - Etapa 01
+//imagem que substitui a ellipse
+  imageMode(height/3);
+  animacao();
+   
+//círculo maior = comida - Etapa 01
+//  circle(eX,eY,eR);
+ for(var i=0; i<imgfantasmas.length;i++)
+ {
+   imageMode(height/3);
+   image(imgfantasmas[i],fantasmaposx[i], fantasmaposy[i], 15);
+   fantasmaposy[i] += eV;
+   
+//fantasmas ultrapassam a tela e voltam a sua posicao inicial e jogador perde pontos
+   if(fantasmaposy[i] > 400)
+   {
+     fantasmaposy[i] = -random(10);
+     fantasmaposx[i] = random(20,380);
+     pontos -= parseInt(random(1,2));
+   }
+   if(dist(fantasmaposx[i],fantasmaposy[i],x,y) <= r - 15)
+   {
+    fantasmaposx[i] = random(50,350);
+    fantasmaposy[i] = -random(10);
+    pontos += parseInt(random(1,2));
+   }
+   if(dist(fantasmaposx[i],fantasmaposy[i],xd,yd) <= 15)
+   {
+     fantasmaposx[i] = random(50,350);
+     fantasmaposy[i] = -random(10);
+   }
+}
+
+//círculo menor = obstáculo - Etapa 01
+  circle(xd, yd, 5);
+  
+//texto do jogo - Etapa 05
+  textSize(16);
+  fill(255);
+  text("Pontos: "+pontos,5,20);
+  text("Nivel: "+nivel,320, 20);
+  
+//fim de jogo
+  if(pontos <= 0)
+  {
+    cena = 2;
+    pontos = 5;
+  } 
+}
+// game over
+function gameover()
+{
+  background(0);
+  textSize(40);
+  fill(random (255), random (255), random(255));
+
+  text(' GAME OVER',60, 200);
+  textSize(18);
+  text(' O jogo retornará a tela inicial em 6 segundos',10, 370); 
+// mySound.setVolume(0.1);
+// mySound.play();
+  
+  animaoriva();
+ 
+//Para reiniciar o jogo quando o tempo for maior que 6 segundos
+  tempo++;
+  var seg = Math.floor(tempo/30);
+  if(seg >= 6)
+  {
+   cena = 0;
+  }
+}
