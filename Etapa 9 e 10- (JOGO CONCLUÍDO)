@@ -1,7 +1,9 @@
-
-
-
-
+/*
+  Grupo:
+    Ana Beatriz Fontes Ferreira- Substurma D(Líder)
+    Vítoria Silva Bredun- Subturma D
+  Jogo: "ORIVAS PAC MAN"
+*/
 //coordenadas da posição e do raio do jogador
 let x, 
     y, 
